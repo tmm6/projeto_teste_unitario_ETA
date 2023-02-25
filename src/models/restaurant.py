@@ -4,7 +4,6 @@ class Restaurant:
 
     def __init__(self, restaurant_name, cuisine_type):
         self.restaurant_name = restaurant_name.title()
-        print(restaurant_name.title())
         self.cuisine_type = cuisine_type
         self.number_served = 0
         self.open = False
@@ -89,7 +88,7 @@ class Restaurant:
             self.number_served = total_customers
             return f"{self.number_served} pessoas foram servidas até o momento!"
         else:
-            print(f"{self.restaurant_name} está fechado!")
+            return f"{self.restaurant_name} está fechado!"
 
     def increment_number_served(self, more_customers):
         """Aumenta número total de clientes atendidos por este restaurante."""
@@ -112,4 +111,10 @@ class Restaurant:
             self.number_served += more_customers
             return f"{self.number_served} pessoas foram servidas até o momento!"
         else:
-            print(f"{self.restaurant_name} está fechado!")
+            return f"{self.restaurant_name} está fechado!"
+
+    """
+    Criação de um método para validar se a quantidade de clientes é válida.
+    """
+    def valid_qtd_customers(self, customers):
+        return type(customers) == int and customers > 0
