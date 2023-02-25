@@ -48,6 +48,7 @@ class Restaurant:
     def set_number_served(self, total_customers):
         """Defina o número total de pessoas atendidas por este restaurante até o momento."""
         """
+        Bug: Não tem um retorno para o usuário informando se o número de pessoas servidas foi atualizado.
         """
         if self.open:
             self.number_served = total_customers
