@@ -12,32 +12,44 @@ class IceCreamStand(Restaurant):
         super().__init__(restaurant_name, cuisine_type)
         self.flavors = flavors_list
 
+    # trocar o print pelo return
     def flavors_available(self):
         """Percorra a lista de sabores disponíveis e imprima."""
         if self.flavors:
-            print("\nNo momento temos os seguintes sabores de sorvete disponíveis:")
-            for flavor in self.flavors:
-                print(f"\t-{flavor}")
+            # refatorando para ter um return
+            #print("\nNo momento temos os seguintes sabores de sorvete disponíveis:")
+            return self.flavors
+            # for flavor in self.flavors:
+            #     print(f"\t-{flavor}")
         else:
-            print("Estamos sem estoque atualmente!")
+            return "Estamos sem estoque atualmente!"
+            #print("Estamos sem estoque atualmente!")
 
     def find_flavor(self, flavor):
         """Verifica se o sabor informado está disponível."""
         if self.flavors:
             if flavor in self.flavors:
-                print(f"Temos no momento {self.flavors}!")
+                # bug: está retorenando a lista. Deveria ser somente flavor
+                return f"Temos no momento {flavor}!"
+                #print(f"Temos no momento {self.flavors}!")
             else:
-                print(f"Não temos no momento {self.flavors}!")
+              return f"Não temos no momento {flavor}!"
+                #print(f"Não temos no momento {self.flavors}!")
         else:
-            print("Estamos sem estoque atualmente!")
+            return "Estamos sem estoque atualmente!"
+            #print("Estamos sem estoque atualmente!"
 
     def add_flavor(self, flavor):
         """Add o sabor informado ao estoque."""
-        if self.flavors:
-            if flavor in self.flavors:
-                print("\nSabor já disponivel!")
-            else:
-                self.flavors.append(flavor)
-                print(f"{flavor} adicionado ao estoque!")
+        # bug: não precisa verificar se a lista esta vazia
+        #if self.flavors:
+        if flavor in self.flavors:
+            return "Sabor já disponivel!"
+            # print("\nSabor já disponivel!")
         else:
-            print("Estamos sem estoque atualmente!")
+            self.flavors.append(flavor)
+            return f"{flavor} adicionado ao estoque!"
+            #print(f"{flavor} adicionado ao estoque!")
+        #else:
+        #    return "Estamos sem estoque atualmente!"
+            # print("Estamos sem estoque atualmente!")
