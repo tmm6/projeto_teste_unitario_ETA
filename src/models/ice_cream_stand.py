@@ -4,6 +4,8 @@ from src.models.restaurant import Restaurant
 class IceCreamStand(Restaurant):
     """Um tipo especializado de restaurante."""
 
+    msg_no_flavors = 'Estamos sem estoque atualmente!'
+
     def __init__(self, restaurant_name, cuisine_type, flavors_list):
         """
         Inicialize os atributos da classe pai.
@@ -19,6 +21,7 @@ class IceCreamStand(Restaurant):
         Correção:
         - Trocar print por return.
         - Ajustar a mensagem para retornar a frase e os valores.
+        - Ajustar o for para que retorne a lista de sabores com quebra de linha.
         
         Remoção:
         print("\nNo momento temos os seguintes sabores de sorvete disponíveis:")
@@ -27,9 +30,12 @@ class IceCreamStand(Restaurant):
             print(f"\t-{flavor}")
         """
         if self.flavors:
-            return f'No momento temos os seguintes sabores de sorvete disponíveis: {self.flavors}'
+            flavors_string = ''
+            for flav in self.flavors:
+                flavors_string += f'\n- {flav}'
+            return f'No momento temos os seguintes sabores de sorvete disponíveis: {flavors_string}'
         else:
-            return "Estamos sem estoque atualmente!"
+            return self.msg_no_flavors
 
     def find_flavor(self, flavor):
         """Verifica se o sabor informado está disponível."""
@@ -48,11 +54,11 @@ class IceCreamStand(Restaurant):
         """
         if self.flavors:
             if flavor in self.flavors:
-                return f"Temos no momento {flavor}!"
+                return f'Temos no momento {flavor}!'
             else:
-              return f"Não temos no momento {flavor}!"
+              return f'Não temos no momento {flavor}!'
         else:
-            return "Estamos sem estoque atualmente!"
+            return self.msg_no_flavors
 
     def add_flavor(self, flavor):
         """Add o sabor informado ao estoque."""
@@ -72,7 +78,7 @@ class IceCreamStand(Restaurant):
             print("Estamos sem estoque atualmente!")
         """
         if flavor in self.flavors:
-            return "Sabor já disponivel!"
+            return 'Sabor já disponivel!'
         else:
             self.flavors.append(flavor)
-            return f"{flavor} adicionado ao estoque!"
+            return f'{flavor} adicionado ao estoque!'
