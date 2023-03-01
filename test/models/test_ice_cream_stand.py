@@ -10,6 +10,7 @@ class TestIceCreamStand:
     """
     Utilizando fixture para montar um setup comum a todos os testes.
     """
+
     @pytest.fixture(autouse=True, scope='function')
     def ice_cream_stand(self):
         # ______________SETUP______________
@@ -100,6 +101,7 @@ class TestIceCreamStand:
         # Setup
         duplicate_flavor = 'Maracujá'
         msg_duplicate_flavor = "Sabor já disponivel!"
+        flavors_list = ['Tapioca', 'Mousse de Pistache', 'Maracujá']
 
         # Chamada
         result = ice_cream_stand.add_flavor('Maracujá')
@@ -107,3 +109,4 @@ class TestIceCreamStand:
         # Assert
         assert result == msg_duplicate_flavor
         assert ice_cream_stand.flavors[2] == 'Maracujá'
+        assert ice_cream_stand.flavors == flavors_list
