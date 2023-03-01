@@ -107,14 +107,16 @@ class TestRestaurant:
         more_customers = 10
         restaurant.open = True
         restaurant.number_served = number_served
+        msg_number_served = f"{number_served+more_customers} pessoas foram servidas até o momento!"
 
         # Chamada
         result = restaurant.increment_number_served(more_customers)
 
         # Assert
         assert restaurant.number_served == number_served + more_customers
+        assert result == msg_number_served
 
-    def test_increment_number_served_restaurante_aberto(self, restaurant, msg_restaurant_closed):
+    def test_increment_number_served_restaurante_fechado(self, restaurant, msg_restaurant_closed):
         # Setup
         number_served = 12
         more_customers = 10
@@ -125,9 +127,10 @@ class TestRestaurant:
         result = restaurant.increment_number_served(more_customers)
 
         # Assert
+        assert restaurant.number_served == number_served
         assert result == msg_restaurant_closed
 
-    @pytest.mark.parametrize('values, results', [('sorvete', False), (2.6, False), (-1, False), (10, True)])
+    @pytest.mark.parametrize('values, results', [('sorvete', False), (-1, False), (0, False), (1, True), (2.6, False),  (10, True)])
     def test_valid_qtd_customers(self, values, results, restaurant):
         # Chamada
         result = restaurant.valid_qtd_customers(values)

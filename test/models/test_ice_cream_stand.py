@@ -1,97 +1,109 @@
+import pytest
+
 from src.models.ice_cream_stand import IceCreamStand
 
 
 class TestIceCreamStand:
-
-    def test_flavors_available(self):
-        restaurante_name = 'Sorvete dos Deuses'
+    """
+    Utilização de técnica de testes por meio de requisitos
+    """
+    """
+    Utilizando fixture para montar um setup comum a todos os testes.
+    """
+    @pytest.fixture(autouse=True, scope='function')
+    def ice_cream_stand(self):
+        # ______________SETUP______________
+        restaurant_name = 'Sorveteria dos Deuses'
         cuisine_type = 'Sorveteria'
-        flavors_list = ['Tapioca', 'Açaí', 'Maracujá']
-        sorveteria = IceCreamStand(restaurante_name, cuisine_type, flavors_list)
+        flavors_list = ['Tapioca', 'Mousse de Pistache', 'Maracujá']
+        ice_cream = IceCreamStand(restaurant_name, cuisine_type, flavors_list)
+        return ice_cream
+        # yield restaurant
+        # _______________TEARDOWN______________
 
-        result = sorveteria.flavors_available()
+    @pytest.fixture
+    def msg_no_flavors(self):
+        return 'Estamos sem estoque atualmente!'
 
-        assert result == flavors_list
-        #assert False
+    def test_flavors_available(self, ice_cream_stand):
+        # Setup
+        flavors_list = '\n- Tapioca\n- Mousse de Pistache\n- Maracujá'
+        msg_flavors_list = f'No momento temos os seguintes sabores de sorvete disponíveis: {flavors_list}'
 
-    def test_flavors_available_sem_estoque(self):
-        restaurante_name = 'Sorvete dos Deuses'
-        cuisine_type = 'Sorveteria'
-        flavors_list = []
-        sorveteria = IceCreamStand(restaurante_name, cuisine_type, flavors_list)
+        # Chamada
+        result = ice_cream_stand.flavors_available()
 
-        result = sorveteria.flavors_available()
+        # Assert
+        assert result == msg_flavors_list
 
-        assert result == "Estamos sem estoque atualmente!"
-        assert sorveteria.flavors == []
-        #assert False
+    def test_flavors_available_sem_estoque(self, ice_cream_stand, msg_no_flavors):
+        # Setup
+        result_flavor_list = []
+        ice_cream_stand.flavors = []
 
-    def test_find_flavor(self):
-        restaurante_name = 'Sorvete dos Deuses'
-        cuisine_type = 'Sorveteria'
-        flavors_list = ['Tapioca', 'Açaí', 'Maracujá']
-        sorveteria = IceCreamStand(restaurante_name, cuisine_type, flavors_list)
+        # Chamada
+        result = ice_cream_stand.flavors_available()
 
-        result = sorveteria.find_flavor('Tapioca')
+        # Assert
+        assert result == msg_no_flavors
+        assert ice_cream_stand.flavors == result_flavor_list
 
-        assert result == 'Temos no momento Tapioca!'
-        # assert False
+    def test_find_flavor(self, ice_cream_stand):
+        # Setup
+        flavor = 'Tapioca'
+        msg_find_flavor = f'Temos no momento {flavor}!'
 
-    def test_find_flavor_sem_sabor(self):
-        restaurante_name = 'Sorvete dos Deuses'
-        cuisine_type = 'Sorveteria'
-        flavors_list = ['Tapioca', 'Açaí', 'Maracujá']
-        sorveteria = IceCreamStand(restaurante_name, cuisine_type, flavors_list)
+        # Chamada
+        result = ice_cream_stand.find_flavor(flavor)
 
-        result = sorveteria.find_flavor('Cupuaçu')
+        # Assert
+        assert result == msg_find_flavor
 
-        assert result == 'Não temos no momento Cupuaçu!'
-        # assert False
+    def test_find_flavor_sabor_nao_existe(self, ice_cream_stand):
+        # Setup
+        flavor = 'Limão'
+        msg_find_flavor = f'Não temos no momento {flavor}!'
 
-    def test_find_flavor_sem_estoque(self):
-        restaurante_name = 'Sorvete dos Deuses'
-        cuisine_type = 'Sorveteria'
-        flavors_list = []
-        sorveteria = IceCreamStand(restaurante_name, cuisine_type, flavors_list)
+        # Chamada
+        result = ice_cream_stand.find_flavor(flavor)
 
-        result = sorveteria.find_flavor('Cupuaçu')
+        # Assert
+        assert result == msg_find_flavor
 
-        assert result == 'Estamos sem estoque atualmente!'
-        assert sorveteria.flavors == flavors_list
-        # assert False
+    def test_find_flavor_sem_estoque(self, ice_cream_stand, msg_no_flavors):
+        # Setup
+        flavor = 'Tapioca'
+        result_flavor_list = []
+        ice_cream_stand.flavors = []
 
-    def test_add_flavor(self):
-        restaurante_name = 'Sorvete dos Deuses'
-        cuisine_type = 'Sorveteria'
-        flavors_list = ['Tapioca', 'Açaí', 'Maracujá']
-        sorveteria = IceCreamStand(restaurante_name, cuisine_type, flavors_list)
+        # Chamada
+        result = ice_cream_stand.find_flavor(flavor)
 
-        result = sorveteria.add_flavor('Cupuaçu')
+        # Assert
+        assert result == msg_no_flavors
+        assert ice_cream_stand.flavors == result_flavor_list
 
-        assert result == "Cupuaçu adicionado ao estoque!"
-        assert sorveteria.flavors[3] == 'Cupuaçu'
-        # assert False
+    def test_add_flavor(self, ice_cream_stand):
+        # Setup
+        new_flavor = 'Cupuaçu'
+        msg_add_flavor = f'{new_flavor} adicionado ao estoque!'
+        index_flavors_list = -1
 
-    def test_add_flavor_com_lista_vazia(self):
-        restaurante_name = 'Sorvete dos Deuses'
-        cuisine_type = 'Sorveteria'
-        flavors_list = []
-        sorveteria = IceCreamStand(restaurante_name, cuisine_type, flavors_list)
+        # Chamada
+        result = ice_cream_stand.add_flavor(new_flavor)
 
-        result = sorveteria.add_flavor('Cupuaçu')
+        # Assert
+        assert result == msg_add_flavor
+        assert ice_cream_stand.flavors[index_flavors_list] == new_flavor
 
-        assert result == "Cupuaçu adicionado ao estoque!"
-        assert sorveteria.flavors[0] == 'Cupuaçu'
-        # assert False
+    def test_add_flavor_sabor_ja_existente(self, ice_cream_stand):
+        # Setup
+        duplicate_flavor = 'Maracujá'
+        msg_duplicate_flavor = "Sabor já disponivel!"
 
-    def test_add_flavor_ja_existente(self):
-        restaurante_name = 'Sorvete dos Deuses'
-        cuisine_type = 'Sorveteria'
-        flavors_list = ['Tapioca', 'Açaí', 'Maracujá']
-        sorveteria = IceCreamStand(restaurante_name, cuisine_type, flavors_list)
+        # Chamada
+        result = ice_cream_stand.add_flavor('Maracujá')
 
-        result = sorveteria.add_flavor('Maracujá')
-
-        assert result == "Sabor já disponivel!"
-        assert sorveteria.flavors[2] == 'Maracujá'
-        # assert False
+        # Assert
+        assert result == msg_duplicate_flavor
+        assert ice_cream_stand.flavors[2] == 'Maracujá'
