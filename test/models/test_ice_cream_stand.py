@@ -53,12 +53,14 @@ class TestIceCreamStand:
         # Setup
         flavor = 'Tapioca'
         msg_find_flavor = f'Temos no momento {flavor}!'
+        index_flavors_list = 0
 
         # Chamada
         result = ice_cream_stand.find_flavor(flavor)
 
         # Assert
         assert result == msg_find_flavor
+        assert ice_cream_stand.flavors[index_flavors_list] == flavor
 
     def test_find_flavor_sabor_nao_existe(self, ice_cream_stand):
         # Setup
@@ -89,6 +91,7 @@ class TestIceCreamStand:
         new_flavor = 'Cupuaçu'
         msg_add_flavor = f'{new_flavor} adicionado ao estoque!'
         index_flavors_list = -1
+        flavors_list = ['Tapioca', 'Mousse de Pistache', 'Maracujá', 'Cupuaçu']
 
         # Chamada
         result = ice_cream_stand.add_flavor(new_flavor)
@@ -96,17 +99,19 @@ class TestIceCreamStand:
         # Assert
         assert result == msg_add_flavor
         assert ice_cream_stand.flavors[index_flavors_list] == new_flavor
+        assert ice_cream_stand.flavors == flavors_list
 
     def test_add_flavor_sabor_ja_existente(self, ice_cream_stand):
         # Setup
         duplicate_flavor = 'Maracujá'
         msg_duplicate_flavor = "Sabor já disponivel!"
         flavors_list = ['Tapioca', 'Mousse de Pistache', 'Maracujá']
+        index_flavors_list = 2
 
         # Chamada
         result = ice_cream_stand.add_flavor('Maracujá')
 
         # Assert
         assert result == msg_duplicate_flavor
-        assert ice_cream_stand.flavors[2] == 'Maracujá'
+        assert ice_cream_stand.flavors[index_flavors_list] == 'Maracujá'
         assert ice_cream_stand.flavors == flavors_list

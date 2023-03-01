@@ -38,12 +38,14 @@ class TestRestaurant:
     def test_open_restaurant_restaurante_fechado(self, restaurant):
         # Setup
         msg_restaurant_opened = 'Sabor Do Nordeste agora está aberto!'
+        restaurant_open = True
 
         # Chamada
         result = restaurant.open_restaurant()
 
         # Assert
         assert result == msg_restaurant_opened
+        assert restaurant.open == restaurant_open
 
     def test_open_restaurant_restaurante_aberto(self, restaurant):
         # Setup
@@ -60,16 +62,19 @@ class TestRestaurant:
         # Setup
         restaurant.open = True
         msg_restaurant_closed = 'Sabor Do Nordeste agora está fechado!'
+        restaurant_close = False
 
         # Chamada
         result = restaurant.close_restaurant()
 
         # Assert
         assert result == msg_restaurant_closed
+        assert restaurant.open == restaurant_close
 
     def test_close_restaurant_restaurante_fechado(self, restaurant):
         # Setup
         msg_restaurant_closed = 'Sabor Do Nordeste já está fechado!'
+        restaurant.open = False
 
         # Chamada
         result = restaurant.close_restaurant()
