@@ -1,4 +1,5 @@
 # ETA
+Projeto referente à disciplina de Testes unitários, da pós de Testes Ágeis.
 
 ## Setup
 
